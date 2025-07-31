@@ -19,10 +19,12 @@ private func isAnimationAllowed() -> Bool {
     } else {
         isUnderHighload = false
     }
-    
-    let isSimulator = TARGET_OS_SIMULATOR != 0
-    
-    return !isSimulator && !ProcessInfo.processInfo.isLowPowerModeEnabled && !UIAccessibility.isReduceMotionEnabled && !isUnderHighload
+
+    #if targetEnvironment(simulator)
+    return false
+    #else
+    return !ProcessInfo.processInfo.isLowPowerModeEnabled && !UIAccessibility.isReduceMotionEnabled && !isUnderHighload
+    #endif
 }
 
 open class Slider : UIControl {
